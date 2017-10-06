@@ -4,105 +4,124 @@
 
 extern keymap_config_t keymap_config;
 
+// Each layer gets a name for readability, which is then used in the keymap matrix below.
+// The underscores don't mean anything - you can have a layer called STUFF or any other name.
+// Layer names don't all need to be of the same length, obviously, and you can also skip them
+// entirely and just use numbers.
 #define _QWERTY 0
-#define _COLEMAK 1
+#define _CSGO 1
 #define _DVORAK 2
 #define _LOWER 3
 #define _RAISE 4
-#define _FN3 5
-#define _FN4 6
+#define _FN1 5
 #define _ADJUST 16
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
-  COLEMAK,
+  CSGO,
   DVORAK,
   LOWER,
   RAISE,
-  FN3,
-  FN4,
   ADJUST,
 };
 
-#define KC_ KC_TRNS
+// Fillers to make layering more clear
 #define _______ KC_TRNS
+#define XXXXXXX KC_NO
 
-#define KC_CAPW LGUI(LSFT(KC_3))        // Capture whole screen
-#define KC_CPYW LGUI(LSFT(LCTL(KC_3)))  // Copy whole screen
-#define KC_CAPP LGUI(LSFT(KC_4))        // Capture portion of screen
-#define KC_CPYP LGUI(LSFT(LCTL(KC_4)))  // Copy portion of screen
-#define KC_X0 MT(MOD_LCTL, KC_ESC)
-#define KC_X1 LOWER
-#define KC_X2 RAISE
-#define KC_X3 LT(_FN3, KC_GRV)
-#define KC_X4 MT(MOD_LSFT, KC_ENT)
+// My actions
+#define KC_FNET LT(_FN1, KC_ENT)
+
+// Mouse config
+#define MOUSEKEY_WHEEL_MAX_SPEED   50
+#define MOUSEKEY_WHEEL_TIME_TO_MAX 0
+#define MOUSEKEY_DELAY             0
+#define MOUSEKEY_INTERVAL          0
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [_QWERTY] = KC_KEYMAP(
-  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-     TAB , Q  , W  , E  , R  , T  ,      Y  , U  , I  , O  , P  ,MINS,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-      X0 , A  , S  , D  , F  , G  ,      H  , J  , K  , L  ,SCLN,QUOT,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     LSFT, Z  , X  , C  , V  , B  ,      N  , M  ,COMM,DOT ,SLSH, X4 ,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-      X3 ,LCTL,LALT,LGUI, X1 ,SPC ,     BSPC, X2 ,LEFT,DOWN, UP ,RGHT
-  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
-  ),
-  [_LOWER] = KC_KEYMAP(
-  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         , 1  , 2  , 3  , 4  , 5  ,      6  , 7  , 8  , 9  , 0  ,    ,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     DEL ,CAPP,LEFT,RGHT, UP ,LBRC,     RBRC, P4 , P5 , P6 ,PLUS,PIPE,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,CPYP,    ,    ,DOWN,LCBR,     RCBR, P1 , P2 , P3 ,MINS,    ,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,     DEL ,    , P0 ,PDOT,    ,
-  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
-  ),
+[_QWERTY] = KEYMAP( \
+  //.--------+--------+--------+--------+--------+--------. .--------+--------+--------+--------+--------+--------.
+      KC_GRV ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   KC_Y   ,  KC_U  , KC_I   ,  KC_O  , KC_P   , KC_MINS,
+  //|--------+--------+--------+--------+--------+--------| |--------+--------+--------+--------+--------+--------|
+      KC_TAB ,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,   KC_H   ,  KC_J  , KC_K   ,  KC_L  , KC_SCLN, KC_QUOT,
+  //|--------+--------+--------+--------+--------+--------| |--------+--------+--------+--------+--------+--------|
+      KC_LSFT, KC_Z   ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,   KC_N   ,  KC_M  , KC_COMM, KC_DOT , KC_SLSH, KC_ENT ,
+  //|--------+--------+--------+--------+--------+--------| |--------+--------+--------+--------+--------+--------|
+      KC_FNET, KC_LCTL, KC_LALT,  LOWER , KC_LGUI, KC_SPC ,   KC_BSPC,  RAISE , KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT
+  //'--------+--------+--------+--------+--------+--------' '--------+--------+--------+--------+--------+--------'
+),
 
-  [_RAISE] = KC_KEYMAP(
-  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,    ,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     DEL ,MPRV,MNXT,VOLU,PGUP,UNDS,     EQL ,HOME,    ,    ,    ,BSLS,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     MUTE,MSTP,MPLY,VOLD,PGDN,MINS,     PLUS,END ,    ,    ,    ,    ,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,
-  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
-  ),
-
-  [_FN3] = KC_KEYMAP(
-  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-     F12 , F1 , F2 , F3 , F4 , F5 ,      F6 , F7 , F8 , F9 ,F10 ,F11 ,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
-  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,
-  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
-  ),
-
-/* Adjust (Lower + Raise)
- * ,-----------------------------------------------------------------------------------.
- * |      | Reset|RGB Tg|RGB Md|Hue Up|Hue Dn|Sat Up|Sat Dn|Val Up|Val Dn|      |      |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
+/* Lower
+ * ,-----------------------------------------. .-----------------------------------------.
+ * |  ESC |   !  |   @  |   #  |   $  |   %  | |   ^  |   &  |   *  |   (  |   )  |  +   |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |  F1  |  F2  |  F3  |  F4  |  F5  | |  F6  |   _  |   +  |     |    \  |  |   |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |  F7  |  F8  |  F9  |  F10 |  F11 | |  F12 |ISO ~ |ISO | |      |      |Enter |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |      |      |      |      |      | |  Del |      | Play | Vol- | Vol+ | Next |
+ * `-----------------------------------------' '-----------------------------------------'
  */
-  [_ADJUST] = KEYMAP( \
-    _______, RESET  , RGB_TOG, RGB_MOD, RGB_HUD, RGB_HUI, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, \
-    _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
-  )
+[_LOWER] = KEYMAP( \
+  KC_ESC, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, KC_LCBR, KC_RCBR, KC_PIPE, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
+),
+
+/* Raise
+ * ,-----------------------------------------. .-----------------------------------------.
+ * | ESC  |   1  |   2  |   3  |   4  |   5  | |   6  |   7  |   8  |   9  |   0  |  =   |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |  F1  |  F2  |  F3  |  F4  |  F5  | |  F6  |   -  |   =  |   [  |   ]  |  \   |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |  F7  |  F8  |  F9  |  F10 |  F11 | |  F12 |ISO # |ISO / |      |      |Enter |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |      |      |      |      |      | |  Del |      | Play | Vol- | Vol+ | Next |
+ * `-----------------------------------------' '-----------------------------------------'
+ */
+[_RAISE] = KEYMAP( \
+  KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL, \
+  _______, _______, _______, _______, _______, _______, _______, _______, KC_LCBR, KC_RCBR, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, KC_LBRC, KC_RBRC, KC_BSLS, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, KC_MPLY, KC_VOLD, KC_VOLU, KC_MNXT \
+),
+
+/* CS:GO */
+[_CSGO] = KEYMAP( \
+   //.--------+--------+--------+--------+--------+--------. .--------+--------+--------+--------+--------+--------.
+      KC_GRV ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   KC_Y   ,  KC_U  , KC_I   ,  KC_O  , KC_P   , KC_MINS,
+  //|--------+--------+--------+--------+--------+--------| |--------+--------+--------+--------+--------+--------|
+      KC_TAB ,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,   KC_H   ,  KC_J  , KC_K   ,  KC_L  , KC_SCLN, KC_QUOT,
+  //|--------+--------+--------+--------+--------+--------| |--------+--------+--------+--------+--------+--------|
+      KC_LSFT, KC_Z   ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,   KC_N   ,  KC_M  , KC_COMM, KC_DOT , KC_SLSH, KC_ENT ,
+  //|--------+--------+--------+--------+--------+--------| |--------+--------+--------+--------+--------+--------|
+      ADJUST , KC_LCTL, KC_LALT,  LOWER , KC_LGUI, KC_SPC ,   KC_BSPC,  RAISE , KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT
+  //'--------+--------+--------+--------+--------+--------' '--------+--------+--------+--------+--------+--------'
+),
+
+/* Dvorak */
+[_DVORAK] = KEYMAP( \
+  KC_TAB,  KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSPC, \
+  KC_ESC,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_SLSH, \
+  KC_LSFT, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_ENT , \
+  ADJUST,  KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+),
+
+[_ADJUST] =  KEYMAP( \
+  _______,  QWERTY, _______, _______, RESET, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, DVORAK , _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, CSGO, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
+),
+
+[_FN1] =  KEYMAP( \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, ADJUST , _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______, \
+  KC_CAPS, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, KC_DEL,  _______, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R \
+),
 
 
 };
@@ -110,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef AUDIO_ENABLE
 float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
 float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
-float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
+float tone_colemak[][2]    = SONG(CSGO_SOUND);
 #endif
 
 void persistent_default_layer_set(uint16_t default_layer) {
@@ -129,12 +148,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case COLEMAK:
+    case CSGO:
       if (record->event.pressed) {
         #ifdef AUDIO_ENABLE
           PLAY_NOTE_ARRAY(tone_colemak, false, 0);
         #endif
-        persistent_default_layer_set(1UL<<_COLEMAK);
+        persistent_default_layer_set(1UL<<_CSGO);
       }
       return false;
       break;
